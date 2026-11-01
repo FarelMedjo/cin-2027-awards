@@ -25,12 +25,7 @@ function compteARebours(cloture) {
     blocs,
   );
 
-  const rafraichir = () => {
-    // L'intervalle s'arrête de lui-même dès que la page a changé.
-    if (!document.body.contains(conteneur)) {
-      clearInterval(minuteur);
-      return;
-    }
+  const afficher = () => {
     let restant = Math.max(0, Date.parse(cloture) - maintenantServeur());
     UNITES.forEach(([unite, duree], index) => {
       const valeur = Math.floor(restant / duree);
@@ -39,8 +34,17 @@ function compteARebours(cloture) {
       cible.textContent = String(valeur).padStart(2, '0');
     });
   };
-  rafraichir();
-  const minuteur = setInterval(rafraichir, 1000);
+  // Premier affichage avant l'insertion dans la page : le conteneur n'y est pas
+  // encore, d'où l'absence de contrôle ici.
+  afficher();
+  const minuteur = setInterval(() => {
+    // L'intervalle s'arrête de lui-même dès que la page a changé.
+    if (!document.body.contains(conteneur)) {
+      clearInterval(minuteur);
+      return;
+    }
+    afficher();
+  }, 1000);
   return conteneur;
 }
 
