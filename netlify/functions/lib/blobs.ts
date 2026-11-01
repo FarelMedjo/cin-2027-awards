@@ -21,15 +21,16 @@ export function setStoreFactory(factory: StoreFactory | null): void {
   override = factory;
 }
 
-let cached: StoreLike | null = null;
-
 export async function openStore(): Promise<StoreLike> {
   if (override) return override();
-  if (cached) return cached;
   const { getStore } = await import('@netlify/blobs');
   // Cohérence forte : indispensable pour relire un dossier votant que l'on
   // vient de modifier. En cohérence par défaut (« eventual »), une mise à jour
   // peut mettre jusqu'à 60 secondes à se propager.
-  cached = getStore({ name: STORE_NAME, consistency: 'strong' }) as unknown as StoreLike;
-  return cached;
+  //
+  // Pas de mise en cache du magasin entre deux appels : le jeton d'accès à
+  // Netlify Blobs est lié à l'invocation en cours et expire. Un magasin gardé en
+  // mémoire dans une fonction « chaude » finit par échouer avec
+  // « Failed to decode token: Token expired » (HTTP 500 sur toute l'API).
+  return getStore({ name: STORE_NAME, consistency: 'strong' }) as unknown as StoreLike;
 }
