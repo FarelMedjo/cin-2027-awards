@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.netlify/
+.local-store/
+.env
+.env.local
+.DS_Store
+*.log
+tickets-*.csv
+resultats-*.csv

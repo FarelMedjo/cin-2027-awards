@@ -1,0 +1,57 @@
+[build]
+  # « Build » = une copie de fichiers : le front est en HTML/CSS/JS standards,
+  # sans transpilation ni empaquetage. Voir scripts/build.js.
+  command = "node scripts/build.js"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+[dev]
+  # `netlify dev` sert dist/ et les fonctions. Lancer `npm run build` avant.
+  # Sans la CLI Netlify, `npm run serve` fait la même chose sans dépendance.
+  framework = "#static"
+  publish = "dist"
+  autoLaunch = false
+
+# API : /api/xxx -> /.netlify/functions/xxx (les fonctions déclarent aussi leur
+# chemin via `config.path`, ceci reste un filet de sécurité).
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Routage côté client (/, /vote, /admin, /ceremonie...).
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer"
+    X-Frame-Options = "DENY"
+    Permissions-Policy = "accelerometer=(), ambient-light-sensor=(), autoplay=(), camera=(), display-capture=(), encrypted-media=(), geolocation=(), gyroscope=(), magnetometer=(), midi=(), microphone=(), payment=(), usb=(), xr-spatial-tracking=()"
+    Cross-Origin-Opener-Policy = "same-origin"
+    Cross-Origin-Resource-Policy = "same-origin"
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+
+# Les réponses de l'API ne doivent jamais être mises en cache.
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-store, max-age=0"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "no-cache"

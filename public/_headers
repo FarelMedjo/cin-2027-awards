@@ -1,0 +1,3 @@
+# Garde-fou : si netlify.toml n'etait pas pris en compte, ces en-tetes s'appliquent quand meme.
+/*
+  X-Robots-Tag: noindex, nofollow, noarchive

@@ -1,0 +1,466 @@
+[
+  {
+    "id": "major-de-la-classe",
+    "title": "Major de la classe",
+    "theme": "Excellence académique",
+    "description": "Celui ou celle qui transforme chaque session d'examens en démonstration tranquille.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "excellence-travaux-pratiques",
+    "title": "Prix de l'excellence en travaux pratiques",
+    "theme": "Excellence académique",
+    "description": "En salle machine, tout fonctionne du premier coup. Personne ne sait vraiment comment.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "cerveau-de-la-salle",
+    "title": "Le cerveau de la salle",
+    "theme": "Excellence académique",
+    "description": "La personne vers qui tous les regards se tournent quand la question devient vraiment difficile.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "roi-des-exposes",
+    "title": "Le roi des exposés",
+    "theme": "Excellence académique",
+    "description": "Diapositives impeccables, voix posée, plan annoncé : l'exposé devient un spectacle.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "champion-des-exposes-improvises",
+    "title": "Champion des exposés improvisés",
+    "theme": "Excellence académique",
+    "description": "Prévenu cinq minutes avant, il passe au tableau et s'en sort avec les honneurs.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "meilleur-orateur",
+    "title": "Meilleur orateur",
+    "theme": "Excellence académique",
+    "description": "Le plus convaincant lors des présentations : on finirait par croire n'importe quelle hypothèse.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-assidu",
+    "title": "Le plus assidu",
+    "theme": "Excellence académique",
+    "description": "Présent du premier au dernier cours, quelle que soit l'heure et quel que soit le temps.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "chouchou-des-enseignants",
+    "title": "Le chouchou des enseignants",
+    "theme": "Excellence académique",
+    "description": "Son nom est retenu dès la deuxième semaine, et pas pour une mauvaise raison.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "specialiste-des-questions-pieges",
+    "title": "Spécialiste des questions pièges",
+    "theme": "Excellence académique",
+    "description": "Lève la main à la fin du cours et pose la question qui rallonge la séance de vingt minutes.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "monsieur-je-nai-pas-compris",
+    "title": "Le spécialiste du « Monsieur, je n'ai pas compris »",
+    "theme": "Excellence académique",
+    "description": "Pose à voix haute la question que toute la salle avait en tête sans oser la formuler.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "maitre-du-dernier-moment",
+    "title": "Le maître du dernier moment",
+    "theme": "Excellence académique",
+    "description": "Rend tout à la dernière minute et réussit quand même. Méthode non reproductible.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "specialiste-du-copier-coller",
+    "title": "Spécialiste du copier-coller",
+    "theme": "Excellence académique",
+    "description": "Le raccourci clavier le plus rentable de toute la cinquième année.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-debrouillard",
+    "title": "Le plus débrouillard",
+    "theme": "Excellence académique",
+    "description": "Un blocage technique ? Il trouve toujours un contournement, parfois même propre.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "pilier-du-groupe",
+    "title": "Le pilier du groupe",
+    "theme": "Excellence académique",
+    "description": "Dans un travail de groupe, c'est la personne sur qui l'on sait pouvoir compter jusqu'au bout.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "revelation-de-lannee",
+    "title": "La révélation de l'année",
+    "theme": "Excellence académique",
+    "description": "Celui ou celle dont la progression a surpris tout le monde, y compris lui-même.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-polyvalent",
+    "title": "Le plus polyvalent",
+    "theme": "Excellence académique",
+    "description": "Réseau, code, rapport, soutenance : tout lui va, et plutôt bien.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "distributeur-de-cours",
+    "title": "Distributeur de cours",
+    "theme": "Excellence académique",
+    "description": "Le dépôt officiel de la promo : un message, et les documents arrivent.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "leader-naturel",
+    "title": "Le leader naturel",
+    "theme": "Vie de promo",
+    "description": "Sans titre officiel, c'est pourtant lui que la salle finit toujours par suivre.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "delegue-exemplaire",
+    "title": "Le délégué exemplaire",
+    "theme": "Vie de promo",
+    "description": "Porte la voix de la promo, encaisse les reproches, et revient quand même.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "bon-samaritain",
+    "title": "Bon samaritain",
+    "theme": "Vie de promo",
+    "description": "Aide sans qu'on le demande, et sans jamais le rappeler ensuite.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-serviable",
+    "title": "Le plus serviable",
+    "theme": "Vie de promo",
+    "description": "Un service demandé, un service rendu, aucune négociation.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-solidaire",
+    "title": "Le plus solidaire",
+    "theme": "Vie de promo",
+    "description": "Partage ses cours et aide les autres, surtout la veille des examens.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "camarade-de-lannee",
+    "title": "Le camarade de l'année",
+    "theme": "Vie de promo",
+    "description": "Le plus apprécié de tous : difficile de lui trouver un seul adversaire.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-populaire",
+    "title": "Le plus populaire",
+    "theme": "Vie de promo",
+    "description": "Tout le monde le connaît, y compris les promos qui ne l'ont jamais croisé.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-charismatique",
+    "title": "Le plus charismatique",
+    "theme": "Vie de promo",
+    "description": "Entre dans une salle, et le niveau sonore change tout seul.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-sociable",
+    "title": "Le plus sociable",
+    "theme": "Vie de promo",
+    "description": "À l'aise avec tout le monde, du premier rang au fond de la salle.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "meilleur-ambianceur",
+    "title": "Meilleur ambianceur",
+    "theme": "Vie de promo",
+    "description": "Sans lui, une sortie de promo reste un simple rassemblement.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-timide",
+    "title": "Le plus timide",
+    "theme": "Vie de promo",
+    "description": "Parle peu, mais chaque phrase est pesée. Et cela mérite bien un award.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "futur-milliardaire",
+    "title": "Futur milliardaire",
+    "theme": "Vie de promo",
+    "description": "Celui dont on gardera précieusement le numéro, au cas où.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "meilleur-binome",
+    "title": "Meilleur binôme",
+    "theme": "Vie de promo",
+    "description": "Les deux inséparables des travaux pratiques. Choisis exactement deux personnes.",
+    "type": "duo",
+    "excludedNominees": []
+  },
+  {
+    "id": "beau-parleur",
+    "title": "Beau parleur",
+    "theme": "Vie de promo",
+    "description": "Le verbe est beau, l'argument discutable, et la salle convaincue.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "meilleur-sapeur",
+    "title": "Meilleur sapeur",
+    "theme": "Style et personnalité",
+    "description": "",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "meilleur-danseur",
+    "title": "Meilleur danseur",
+    "theme": "Style et personnalité",
+    "description": "Deux notes de musique suffisent : le reste se passe sans lui demander son avis.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-sauvage",
+    "title": "Le plus sauvage",
+    "theme": "Style et personnalité",
+    "description": "Pas tout à fait apprivoisé : garde ses distances et fait les choses à sa façon.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-fou",
+    "title": "Le plus fou",
+    "theme": "Style et personnalité",
+    "description": "Celui dont les idées font rire la salle avant même qu'il ait fini de les exposer.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "limprevisible",
+    "title": "L'imprévisible",
+    "theme": "Style et personnalité",
+    "description": "On ne sait jamais à quoi s'attendre, et c'est précisément ce qui plaît.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "meilleur-dragueur",
+    "title": "Meilleur dragueur",
+    "theme": "Cœur et relations",
+    "description": "Technique rodée, assurance intacte, taux de réussite confidentiel.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "crush-de-la-promo",
+    "title": "La crush de la promo",
+    "theme": "Cœur et relations",
+    "description": "Celui ou celle dont le nom revient dans toutes les conversations à voix basse.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-fuckboy",
+    "title": "Le fuckboy",
+    "theme": "Cœur et relations",
+    "description": "Promesses nombreuses, engagements rares, agenda bien rempli.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "collectionneur-des-coeurs",
+    "title": "Collectionneur des cœurs",
+    "theme": "Cœur et relations",
+    "description": "Avance dans la vie en laissant derrière lui une jolie collection de souvenirs.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "celibataire-le-plus-convoite",
+    "title": "Célibataire le plus convoité",
+    "theme": "Cœur et relations",
+    "description": "Officiellement libre, officieusement très observé.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "coeur-brise-de-la-promo",
+    "title": "Cœur brisé de la promo",
+    "theme": "Cœur et relations",
+    "description": "A beaucoup donné et beaucoup appris. Award remis avec toute notre tendresse.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-creve-de-secours",
+    "title": "Le crève de secours",
+    "theme": "Cœur et relations",
+    "description": "",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "meilleur-mougou-officiel",
+    "title": "Meilleur mougou officiel",
+    "theme": "Cœur et relations",
+    "description": "",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "fbi-des-relations",
+    "title": "FBI des relations",
+    "theme": "Cœur et relations",
+    "description": "",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-ou-la-plus-commere",
+    "title": "Le ou la plus commère",
+    "theme": "Cœur et relations",
+    "description": "Informé avant tout le monde, et jamais avare d'un détail supplémentaire.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "meilleur-dossier",
+    "title": "Meilleur dossier",
+    "theme": "Cœur et relations",
+    "description": "",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-jaloux",
+    "title": "Le plus jaloux",
+    "theme": "Cœur et relations",
+    "description": "Surveille sans surveiller, demande sans demander, remarque absolument tout.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-hypocrite",
+    "title": "Le plus hypocrite",
+    "theme": "Cœur et relations",
+    "description": "Sourit devant, commente derrière. Award décerné sans rancune.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "roi-des-retards",
+    "title": "Le roi ou la reine des retards",
+    "theme": "Retards, absences et excuses",
+    "description": "Arrive quand le cours a enfin trouvé son rythme, salue, puis s'installe tranquillement.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "labsenteiste",
+    "title": "L'absentéiste",
+    "theme": "Retards, absences et excuses",
+    "description": "Son nom sur une liste de présence relève presque de la légende.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-jarrive-qui-narrive-jamais",
+    "title": "Le « j'arrive » qui n'arrive jamais",
+    "theme": "Retards, absences et excuses",
+    "description": "Un message, une promesse, un silence. Puis plus rien.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "champion-des-excuses",
+    "title": "Champion des excuses",
+    "theme": "Retards, absences et excuses",
+    "description": "Jamais la même deux fois, toujours plausible, souvent spectaculaire.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "fantome-whatsapp",
+    "title": "Le fantôme WhatsApp",
+    "theme": "Retards, absences et excuses",
+    "description": "Lit tous les messages, ne répond à aucun. Les deux coches bleues en témoignent.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-difficile-a-joindre",
+    "title": "Le plus difficile à joindre",
+    "theme": "Retards, absences et excuses",
+    "description": "Deux appels, trois messages, une semaine : il finira bien par réapparaître.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-connecte",
+    "title": "Le plus connecté",
+    "theme": "Retards, absences et excuses",
+    "description": "En ligne à toute heure, sur tous les groupes, sur tous les sujets.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "specialiste-des-interventions-inutiles",
+    "title": "Spécialiste des interventions inutiles",
+    "theme": "Retards, absences et excuses",
+    "description": "Prend la parole longuement pour conclure que la question mérite réflexion.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-endette",
+    "title": "Le plus endetté",
+    "theme": "Retards, absences et excuses",
+    "description": "Tient une comptabilité mentale précise de tout ce qu'il doit, et rembourse... bientôt.",
+    "type": "single",
+    "excludedNominees": []
+  }
+]

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="theme-color" content="#0b0d14" />
+    <meta name="color-scheme" content="dark" />
+    <title>CIN 2027 Awards</title>
+    <meta
+      name="description"
+      content="Vote anonyme pour les awards de la promotion CIN 2027 — ING5 Cybersécurité et Investigation Numérique."
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&display=swap"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a class="lien-evitement" href="#contenu">Aller au contenu</a>
+
+    <header class="entete">
+      <a class="marque" href="/" data-lien>
+        <svg class="marque-bouclier" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path
+            d="M12 2.5 4.5 5.2v6.1c0 4.6 3.1 8.8 7.5 10.2 4.4-1.4 7.5-5.6 7.5-10.2V5.2L12 2.5Z"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linejoin="round"
+          />
+          <path
+            d="m8.6 12.1 2.4 2.4 4.4-4.6"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <span class="marque-texte">CIN<span class="marque-annee">2027</span> Awards</span>
+      </a>
+      <nav class="entete-nav" aria-label="Navigation principale">
+        <a href="/fonctionnement" data-lien>Comment ça marche&nbsp;?</a>
+        <button type="button" id="bouton-deconnexion" class="bouton-lien" hidden>
+          Se déconnecter
+        </button>
+      </nav>
+    </header>
+
+    <main id="contenu" tabindex="-1">
+      <div id="app">
+        <p class="chargement">Chargement…</p>
+      </div>
+    </main>
+
+    <footer class="pied">
+      <p>
+        ING5 — Cybersécurité et Investigation Numérique · École Nationale Supérieure Polytechnique
+        de Yaoundé
+      </p>
+      <p class="pied-discret">
+        Vote anonyme. Aucun compte, aucun suivi, aucune donnée personnelle collectée.
+      </p>
+    </footer>
+
+    <!-- Annonces pour les lecteurs d'écran (confirmations, erreurs). -->
+    <div id="annonces" class="hors-ecran" role="status" aria-live="polite"></div>
+
+    <noscript>
+      <div class="noscript">
+        Ce site a besoin de JavaScript pour enregistrer les votes. Active JavaScript dans ton
+        navigateur, puis recharge la page.
+      </div>
+    </noscript>
+
+    <script type="module" src="/js/main.js"></script>
+  </body>
+</html>
