@@ -72,7 +72,7 @@ describe('comptage des voix', () => {
     await voter(store, CATEGORIE, ['n03'], 1);
 
     const resultats = await computeResults(store);
-    assert.equal(resultats.length, 58);
+    assert.equal(resultats.length, 63);
     const vide = resultats.find((r) => r.categoryId === 'le-plus-timide')!;
     assert.equal(vide.totalVotes, 0);
     assert.deepEqual(vide.rows, []);

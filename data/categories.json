@@ -248,6 +248,22 @@
     "excludedNominees": []
   },
   {
+    "id": "le-plus-riche",
+    "title": "Le plus riche",
+    "theme": "Vie de promo",
+    "description": "Jamais de monnaie à rendre, toujours un billet pour dépanner la table entière.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-chipeur",
+    "title": "Le plus chipeur",
+    "theme": "Vie de promo",
+    "description": "Ce qui est à toi est un peu à lui : le stylo, le goûter, la dernière gorgée.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
     "id": "meilleur-sapeur",
     "title": "Meilleur sapeur",
     "theme": "Style et personnalité",
@@ -284,6 +300,14 @@
     "title": "L'imprévisible",
     "theme": "Style et personnalité",
     "description": "On ne sait jamais à quoi s'attendre, et c'est précisément ce qui plaît.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-beau",
+    "title": "Le plus beau",
+    "theme": "Style et personnalité",
+    "description": "Impossible de rater sa photo, et il le sait très bien.",
     "type": "single",
     "excludedNominees": []
   },
@@ -460,6 +484,22 @@
     "title": "Le plus endetté",
     "theme": "Retards, absences et excuses",
     "description": "Tient une comptabilité mentale précise de tout ce qu'il doit, et rembourse... bientôt.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-gros-foire",
+    "title": "Le plus gros foiré",
+    "theme": "Retards, absences et excuses",
+    "description": "Tout était prévu, préparé, répété. Et pourtant, tout a foiré, devant témoins.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-mythomane",
+    "title": "Le mythomane",
+    "theme": "Retards, absences et excuses",
+    "description": "Raconte chaque histoire avec tant de conviction que lui-même finit par la croire.",
     "type": "single",
     "excludedNominees": []
   }

@@ -3,7 +3,7 @@
 Site de vote anonyme pour les awards de la promotion **CIN 2027** — 5ᵉ année Cybersécurité et
 Investigation Numérique, École Nationale Supérieure Polytechnique de Yaoundé.
 
-58 catégories, 26 nominés, un vote par catégorie et par personne, modifiable jusqu'à la clôture,
+63 catégories, 26 nominés, un vote par catégorie et par personne, modifiable jusqu'à la clôture,
 et des résultats révélés pendant la cérémonie.
 
 ---
@@ -251,7 +251,7 @@ d'adresse, puis connecte le votant.
 **Juste avant la cérémonie**
 
 9. Vérifier que les votes sont **fermés** (ou laisser la clôture automatique faire son travail).
-10. Dans le panneau **Mode cérémonie**, choisir les catégories à révéler et leur ordre — 58 d'un
+10. Dans le panneau **Mode cérémonie**, choisir les catégories à révéler et leur ordre — 63 d'un
     coup, c'est trop long. Enregistrer l'ordre.
 11. Exporter les résultats en CSV et les garder au cas où.
 

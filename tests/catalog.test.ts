@@ -13,9 +13,9 @@ import {
 import type { Category } from '../shared/types.ts';
 
 describe('fichiers de données', () => {
-  it('contient 58 catégories aux identifiants uniques', () => {
-    assert.equal(CATEGORIES.length, 58);
-    assert.equal(new Set(CATEGORIES.map((c) => c.id)).size, 58);
+  it('contient 63 catégories aux identifiants uniques', () => {
+    assert.equal(CATEGORIES.length, 63);
+    assert.equal(new Set(CATEGORIES.map((c) => c.id)).size, 63);
   });
 
   it('contient 26 nominés aux identifiants uniques', () => {
@@ -36,10 +36,10 @@ describe('fichiers de données', () => {
     }
     assert.deepEqual(Object.fromEntries(compte), {
       'Excellence académique': 17,
-      'Vie de promo': 14,
-      'Style et personnalité': 5,
+      'Vie de promo': 16,
+      'Style et personnalité': 6,
       'Cœur et relations': 13,
-      'Retards, absences et excuses': 9,
+      'Retards, absences et excuses': 11,
     });
     assert.equal(THEMES.length, 5);
   });

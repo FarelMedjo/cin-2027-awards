@@ -1,7 +1,7 @@
 /**
  * Tableau de bord des catégories — le cœur du site.
  *
- * 58 cartes compactes, regroupées par thème, avec filtre par thème, recherche,
+ * 63 cartes compactes, regroupées par thème, avec filtre par thème, recherche,
  * filtre « non votées » et une barre de progression qui n'oblige à rien.
  */
 
