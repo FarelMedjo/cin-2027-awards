@@ -1,0 +1,195 @@
+/*
+ * Pages d'erreur (/erreur/...) et test de connexion. Complète styles.css, dont
+ * elle réutilise les variables : mêmes couleurs, mêmes boutons.
+ */
+
+.erreur,
+.erreur-index {
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+.erreur-apercu {
+  margin: 0 0 1.25rem;
+  padding: 0.6rem 0.85rem;
+  border: 1px dashed var(--bordure-vive);
+  border-radius: var(--rayon-petit);
+  color: var(--texte-doux);
+  font-size: 0.88rem;
+}
+
+.erreur-famille {
+  margin: 0;
+  color: var(--texte-faible);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.erreur-code {
+  margin: 0.2rem 0 0;
+  font-family: var(--titre);
+  font-size: clamp(3rem, 16vw, 6rem);
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--or);
+  overflow-wrap: anywhere;
+}
+
+/* Erreurs sans numéro (« Hors ligne »…) : une étiquette, pas un gros chiffre. */
+.erreur-code-texte {
+  font-size: clamp(1.4rem, 6vw, 2rem);
+  margin-top: 0.4rem;
+}
+
+.erreur h1,
+.erreur-index h1 {
+  margin: 0.2rem 0 0.4rem;
+}
+
+.erreur-resume {
+  font-size: 1.1rem;
+  color: var(--texte-doux);
+}
+
+.erreur-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1.4rem 0 0.5rem;
+}
+
+.erreur-technique {
+  margin-top: 2rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon-petit);
+  background: var(--nuit-carte);
+  font-size: 0.9rem;
+}
+.erreur-technique summary {
+  cursor: pointer;
+  min-height: var(--tactile);
+  display: flex;
+  align-items: center;
+}
+.erreur-technique dl {
+  margin: 0.5rem 0 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.35rem 1rem;
+}
+.erreur-technique dt {
+  color: var(--texte-faible);
+}
+.erreur-technique dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+
+/* Index */
+.erreur-index section {
+  margin-top: 2rem;
+}
+.erreur-index h2 {
+  margin-bottom: 0.2rem;
+  color: var(--or-clair);
+}
+.erreur-intro {
+  margin: 0 0 0.8rem;
+  color: var(--texte-doux);
+}
+.erreur-grille {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.7rem;
+}
+.erreur-carte {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  height: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+  background: var(--nuit-carte);
+  color: var(--texte);
+  text-decoration: none;
+}
+.erreur-carte:hover {
+  border-color: var(--or-sombre);
+}
+.erreur-carte-code {
+  font-family: var(--titre);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--or);
+  line-height: 1.1;
+}
+.erreur-carte-titre {
+  font-weight: 600;
+}
+.erreur-carte-technique {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--texte-faible);
+  overflow-wrap: anywhere;
+}
+
+/* Test de connexion */
+.diag-liste {
+  list-style: none;
+  margin: 1.2rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+.diag-ligne {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.2rem 0.6rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon-petit);
+  background: var(--nuit-carte);
+}
+.diag-pastille {
+  grid-row: span 3;
+  font-size: 1.3rem;
+  line-height: 1.2;
+  text-align: center;
+}
+.diag-nom {
+  font-weight: 600;
+}
+.diag-detail {
+  color: var(--texte-doux);
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+.diag-ligne a {
+  font-size: 0.9rem;
+}
+.diag-ok {
+  border-color: var(--vote);
+}
+.diag-ok .diag-pastille {
+  color: var(--vote);
+}
+.diag-ko {
+  border-color: var(--alerte);
+}
+.diag-ko .diag-pastille {
+  color: var(--alerte);
+}
+.diag-avert {
+  border-color: var(--or-sombre);
+}
+.diag-avert .diag-pastille {
+  color: var(--or);
+}

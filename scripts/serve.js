@@ -82,9 +82,12 @@ function lireCorps(req) {
   });
 }
 
-async function servirFichier(res, chemin) {
+/** Les adresses gérées par le routeur côté client (voir netlify.toml et public/js/main.js). */
+const ROUTES_APPLICATION = /^\/(vote(\/.*)?|fonctionnement|admin(\/tickets)?|ceremonie)\/?$/;
+
+async function servirFichier(res, chemin, statut = 200) {
   const contenu = await readFile(chemin);
-  res.writeHead(200, {
+  res.writeHead(statut, {
     ...SECURITE,
     'content-type': TYPES[extname(chemin)] ?? 'application/octet-stream',
     'cache-control': 'no-store',
@@ -135,7 +138,12 @@ const serveur = createServer(async (req, res) => {
       const infos = await stat(demande);
       await servirFichier(res, infos.isDirectory() ? join(demande, 'index.html') : demande);
     } catch {
-      await servirFichier(res, join(dist, 'index.html'));
+      if (ROUTES_APPLICATION.test(url.pathname)) {
+        await servirFichier(res, join(dist, 'index.html'));
+      } else {
+        // Comme Netlify : dist/404.html, avec un vrai statut 404.
+        await servirFichier(res, join(dist, '404.html'), 404);
+      }
     }
   } catch (erreur) {
     console.error('[serve] erreur', erreur);

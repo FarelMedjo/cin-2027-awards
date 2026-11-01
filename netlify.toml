@@ -22,9 +22,38 @@
   to = "/.netlify/functions/:splat"
   status = 200
 
-# Routage côté client (/, /vote, /admin, /ceremonie...).
+# Routage côté client : seules les vraies pages de l'application renvoient
+# index.html. Toute autre adresse tombe sur dist/404.html, servie avec un vrai
+# statut 404 (un « /* » universel avalerait les erreurs en les renvoyant en 200).
+# Garder cette liste synchronisée avec ROUTES dans public/js/main.js et avec
+# ROUTES_APPLICATION dans scripts/serve.js.
 [[redirects]]
-  from = "/*"
+  from = "/vote"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/vote/*"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/fonctionnement"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/tickets"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/ceremonie"
   to = "/index.html"
   status = 200
 

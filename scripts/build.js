@@ -12,6 +12,7 @@
 import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { pagesErreur } from './erreurs.js';
 
 const racine = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(racine, 'dist');
@@ -64,4 +65,14 @@ for (const fichier of ['categories.json', 'nominees.json']) {
   await writeFile(join(dist, 'data', fichier), JSON.stringify(JSON.parse(contenu)));
 }
 
-console.log(`dist/ construit : ${compte.categories} catégories, ${compte.nominees} nominés.`);
+// Pages d'erreur : générées depuis scripts/erreurs.js (voir ce fichier).
+const pagesErreurs = pagesErreur();
+for (const page of pagesErreurs) {
+  const destination = join(dist, page.chemin);
+  await mkdir(dirname(destination), { recursive: true });
+  await writeFile(destination, page.html);
+}
+
+console.log(
+  `dist/ construit : ${compte.categories} catégories, ${compte.nominees} nominés, ${pagesErreurs.length} pages d'erreur.`,
+);
