@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node scripts/build.js",
     "serve": "node scripts/build.js && node scripts/serve.js",
-    "dev": "netlify dev",
+    "dev": "node scripts/build.js && netlify dev",
     "test": "node --test \"tests/*.test.ts\"",
     "typecheck": "tsc --noEmit",
     "simulate": "node scripts/simulate.js",
@@ -20,6 +20,7 @@
     "node": ">=22"
   },
   "devDependencies": {
-    "@netlify/functions": "^6.0.3"
+    "@netlify/functions": "^6.0.3",
+    "netlify-cli": "^27.16.1"
   }
 }

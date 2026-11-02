@@ -122,15 +122,18 @@ administrateur : `admin`). Pour repartir de zéro, supprimer `.local-store/`.
 ### Avec la CLI Netlify
 
 ```bash
-npm install -g netlify-cli
+npm run dev
 ```
 
-```bash
-npm run build && netlify dev
-```
+La CLI Netlify est installée avec le projet (`npm install`), rien à installer à part. La commande
+construit `dist/` puis lance `netlify dev` sur **http://localhost:8888**. Le premier appel à l'API
+prend une quinzaine de secondes, le temps que Netlify prépare les fonctions.
 
 `netlify dev` utilise le vrai Netlify Blobs et se rapproche davantage de la production. C'est la
 façon de vérifier le stockage réel avant le jour J.
+
+Contrairement à `npm run serve`, `netlify dev` ne fournit aucune valeur par défaut : sans fichier
+`.env` (voir plus haut), le vote et l'administration répondent par une erreur 500.
 
 ---
 

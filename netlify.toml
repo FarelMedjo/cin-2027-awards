@@ -9,7 +9,7 @@
   node_bundler = "esbuild"
 
 [dev]
-  # `netlify dev` sert dist/ et les fonctions. Lancer `npm run build` avant.
+  # `netlify dev` sert dist/ et les fonctions. `npm run dev` construit dist/ avant.
   # Sans la CLI Netlify, `npm run serve` fait la même chose sans dépendance.
   framework = "#static"
   publish = "dist"
