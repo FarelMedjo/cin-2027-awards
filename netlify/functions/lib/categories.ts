@@ -8,6 +8,7 @@
  */
 
 import {
+  ALL_CATEGORIES,
   buildCustomCategory,
   CATEGORIES,
   CATEGORY_BY_ID,
@@ -23,7 +24,9 @@ const MAX_WRITE_ATTEMPTS = 4;
 /** Relit une entrée du store sans lui faire confiance : tout ce qui est douteux est écarté. */
 function parseStored(raw: unknown): Category[] {
   if (!Array.isArray(raw)) return [];
-  const seen = new Set(CATEGORIES.map((c) => c.id));
+  // Les identifiants du fichier, catégories masquées comprises, ne peuvent pas
+  // être repris : des votes y sont rattachés.
+  const seen = new Set(ALL_CATEGORIES.map((c) => c.id));
   const result: Category[] = [];
   for (const item of raw) {
     const c = item as Partial<Category> | null;
@@ -57,9 +60,21 @@ export async function readCustomCategories(store: StoreLike): Promise<Category[]
   return parseStored(await store.get(keys.customCategories, { type: 'json' }));
 }
 
-/** Catégories du fichier, puis celles ajoutées, dans l'ordre de création. */
+/**
+ * Catégories proposées au vote : celles du fichier (hors catégories masquées),
+ * puis celles ajoutées, dans l'ordre de création. Pour l'affichage, les
+ * résultats et la cérémonie.
+ */
 export async function listCategories(store: StoreLike): Promise<Category[]> {
   return [...CATEGORIES, ...(await readCustomCategories(store))];
+}
+
+/**
+ * Toutes les catégories dont les votes comptent : celles du fichier, masquées
+ * comprises, puis celles ajoutées. Pour le dépouillement et la participation.
+ */
+export async function listCountedCategories(store: StoreLike): Promise<Category[]> {
+  return [...ALL_CATEGORIES, ...(await readCustomCategories(store))];
 }
 
 /** Cherche une catégorie ; le store n'est lu que si l'identifiant n'est pas dans le fichier. */

@@ -225,3 +225,46 @@ describe('vote et dépouillement d’une catégorie ajoutée', () => {
     assert.equal(participation.totalVotes, 0);
   });
 });
+
+describe('catégories masquées et catégories ajoutées', () => {
+  it('ne laisse jamais une catégorie ajoutée reprendre l’identifiant d’une catégorie masquée', async () => {
+    const store = new FakeStore();
+    const ajout = await addCustomCategory(store, { ...saisie, title: 'Le plus fou' });
+    assert.ok(ajout.ok);
+    assert.equal(ajout.value.id, 'le-plus-fou-2');
+  });
+
+  it('écarte une entrée du store qui reprend l’identifiant d’une catégorie masquée', async () => {
+    const store = new FakeStore();
+    await store.setJSON(keys.customCategories, [
+      { id: 'le-plus-fou', title: 'Le plus fou', theme: 'X', type: 'single' },
+    ]);
+    assert.deepEqual(await readCustomCategories(store), []);
+    assert.equal(await findCategory(store, 'le-plus-fou'), undefined);
+  });
+
+  it('compte les voix masquées et ajoutées dans la participation, seulement les ajoutées dans les résultats', async () => {
+    const store = new FakeStore();
+    await addCustomCategory(store, saisie);
+    for (const [categorie, choix] of [
+      ['le-plus-ponctuel', ['n03']],
+      ['le-plus-fou', ['n04']],
+      ['le-plus-fou', ['n05']],
+    ] as const) {
+      const ctx = ctxPour();
+      await store.setJSON(keys.code(ctx.codeId), { v: 1 });
+      await castVote(store, ctx, categorie, [...choix]);
+    }
+
+    const participation = await computeParticipation(store);
+    assert.equal(participation.totalVotes, 3);
+    assert.equal(participation.archivedVotes, 2);
+    assert.equal(participation.votesByCategory['le-plus-fou'], 2);
+
+    const resultats = await computeResults(store);
+    assert.equal(resultats.length, CATEGORIES.length + 1);
+    assert.ok(resultats.some((r) => r.categoryId === 'le-plus-ponctuel'));
+    assert.ok(!resultats.some((r) => r.categoryId === 'le-plus-fou'));
+    assert.equal((await listCategories(store)).length, CATEGORIES.length + 1);
+  });
+});

@@ -35,7 +35,7 @@ function buildNominees(): Nominee[] {
 function buildCategories(validIds: Set<string>): Category[] {
   const raw = categoriesJson as Category[];
   const seen = new Set<string>();
-  return raw.map((c) => {
+  const list = raw.map((c) => {
     if (!c.id || !c.title || !c.theme) {
       throw new Error(`data/categories.json : entree incomplete (${JSON.stringify(c.id ?? c)})`);
     }
@@ -53,17 +53,53 @@ function buildCategories(validIds: Set<string>): Category[] {
         );
       }
     }
-    return { ...c, description: c.description ?? '', excludedNominees: c.excludedNominees ?? [] };
+    if (c.archived !== undefined && typeof c.archived !== 'boolean') {
+      throw new Error(`data/categories.json : "${c.id}" a un champ archived invalide`);
+    }
+    return {
+      ...c,
+      description: c.description ?? '',
+      excludedNominees: c.excludedNominees ?? [],
+      archived: c.archived === true,
+    };
   });
+
+  // Une fusion doit pointer vers une categorie encore proposee au vote.
+  const visibles = new Set(list.filter((c) => !c.archived).map((c) => c.id));
+  for (const c of list) {
+    if (c.mergedInto === undefined) continue;
+    if (!c.archived) {
+      throw new Error(`data/categories.json : "${c.id}" declare mergedInto sans etre archivee`);
+    }
+    if (!visibles.has(c.mergedInto)) {
+      throw new Error(
+        `data/categories.json : "${c.id}" est fusionnee dans "${c.mergedInto}", absente ou elle-meme archivee`,
+      );
+    }
+  }
+  return list;
 }
 
 export const NOMINEES: readonly Nominee[] = buildNominees();
 export const NOMINEE_BY_ID: ReadonlyMap<string, Nominee> = new Map(NOMINEES.map((n) => [n.id, n]));
 
-export const CATEGORIES: readonly Category[] = buildCategories(new Set(NOMINEE_BY_ID.keys()));
+/** Toutes les entrees de data/categories.json, masquees comprises. */
+export const ALL_CATEGORIES: readonly Category[] = buildCategories(new Set(NOMINEE_BY_ID.keys()));
+export const ALL_CATEGORY_BY_ID: ReadonlyMap<string, Category> = new Map(
+  ALL_CATEGORIES.map((c) => [c.id, c]),
+);
+
+/** Categories proposees au vote et affichees, dans l'ordre du fichier. */
+export const CATEGORIES: readonly Category[] = ALL_CATEGORIES.filter((c) => !c.archived);
 export const CATEGORY_BY_ID: ReadonlyMap<string, Category> = new Map(
   CATEGORIES.map((c) => [c.id, c]),
 );
+
+/** Categories masquees : plus de vote possible, votes deja enregistres conserves. */
+export const ARCHIVED_CATEGORIES: readonly Category[] = ALL_CATEGORIES.filter((c) => c.archived);
+
+export const ARCHIVED_CATEGORY_MESSAGE =
+  'Cette catégorie a été retirée : les votes déjà enregistrés sont conservés, mais ne peuvent plus être modifiés.';
 
 /** Themes dans leur ordre d'apparition dans data/categories.json. */
 export const THEMES: readonly string[] = CATEGORIES.reduce<string[]>((acc, c) => {
@@ -169,7 +205,9 @@ export function buildCustomCategory(
     return { ok: false, error: 'Une catégorie porte déjà ce titre.', code: 'duplicate_title' };
   }
 
-  const taken = new Set(existing.map((c) => c.id));
+  // Les identifiants des catégories masquées restent réservés : leurs votes y
+  // sont rattachés. « Le plus fou » recréé devient donc « le-plus-fou-2 ».
+  const taken = new Set([...ALL_CATEGORY_BY_ID.keys(), ...existing.map((c) => c.id)]);
   let id = wanted;
   for (let suffix = 2; taken.has(id); suffix += 1) id = `${wanted}-${suffix}`;
 
@@ -191,6 +229,9 @@ export function buildCustomCategory(
 export function validateSelection(categoryId: string, nomineeIds: unknown): Validation<string[]> {
   const category = CATEGORY_BY_ID.get(categoryId);
   if (!category) {
+    if (ALL_CATEGORY_BY_ID.has(categoryId)) {
+      return { ok: false, error: ARCHIVED_CATEGORY_MESSAGE, code: 'category_archived' };
+    }
     return { ok: false, error: 'Cette catégorie n’existe pas.', code: 'unknown_category' };
   }
   return validateSelectionFor(category, nomineeIds);

@@ -8,7 +8,7 @@
 
 import { displayName } from '../../../shared/catalog.ts';
 import type { CategoryResult, Participation, ResultRow } from '../../../shared/types.ts';
-import { listCategories } from './categories.ts';
+import { listCategories, listCountedCategories } from './categories.ts';
 import { countByPrefix, keys, parseVoteKey, type StoreLike } from './store.ts';
 
 /** categorie -> (choix trié « n03 » ou « n03+n11 ») -> nombre de voix. */
@@ -17,15 +17,17 @@ export type Tally = Map<string, Map<string, number>>;
 export async function tallyVotes(store: StoreLike): Promise<Tally> {
   const [{ blobs }, categories] = await Promise.all([
     store.list({ prefix: keys.votesPrefix() }),
-    listCategories(store),
+    listCountedCategories(store),
   ]);
   const knownIds = new Set(categories.map((c) => c.id));
   const tally: Tally = new Map();
   for (const blob of blobs) {
     const parsed = parseVoteKey(blob.key);
     if (!parsed) continue;
-    // Une catégorie retirée de data/categories.json après un vote ne doit pas
-    // faire échouer le dépouillement : ses lignes sont simplement ignorées.
+    // Une catégorie inconnue (ni dans data/categories.json, ni ajoutée depuis
+    // l'administration) ne doit pas faire échouer le dépouillement : ses lignes
+    // sont ignorées. Une catégorie masquée (« archived ») reste comptée : ses
+    // votes sont conservés.
     if (!knownIds.has(parsed.categoryId)) continue;
     const selection = [...parsed.nomineeIds].sort().join('+');
     const perCategory = tally.get(parsed.categoryId) ?? new Map<string, number>();
@@ -74,7 +76,11 @@ export function rankSelections(selections: Map<string, number>): ResultRow[] {
   return rows;
 }
 
-/** Résultats complets, dans l'ordre de data/categories.json puis des catégories ajoutées. */
+/**
+ * Résultats des catégories proposées au vote, dans l'ordre de
+ * data/categories.json puis des catégories ajoutées. Les catégories masquées
+ * n'y figurent pas.
+ */
 export async function computeResults(store: StoreLike): Promise<CategoryResult[]> {
   const [tally, categories] = await Promise.all([tallyVotes(store), listCategories(store)]);
   return categories.map((category) => {
@@ -96,18 +102,22 @@ export async function computeParticipation(store: StoreLike): Promise<Participat
     countByPrefix(store, keys.codesPrefix),
     countByPrefix(store, keys.votersPrefix),
     tallyVotes(store),
-    listCategories(store),
+    listCountedCategories(store),
   ]);
 
   const votesByCategory: Record<string, number> = {};
   let totalVotes = 0;
+  let archivedVotes = 0;
   const warnings: string[] = [];
 
+  // Toutes les catégories, masquées comprises : le total reste celui de toutes
+  // les lignes de vote enregistrées.
   for (const category of categories) {
     const perCategory = tally.get(category.id);
     const count = perCategory ? [...perCategory.values()].reduce((a, b) => a + b, 0) : 0;
     votesByCategory[category.id] = count;
     totalVotes += count;
+    if (category.archived) archivedVotes += count;
     // Contrôle de cohérence : une catégorie ne peut pas avoir plus de lignes de
     // vote que de codes ayant voté au moins une fois.
     if (count > codesUsed) {
@@ -117,7 +127,7 @@ export async function computeParticipation(store: StoreLike): Promise<Participat
     }
   }
 
-  return { codesGenerated, codesUsed, votesByCategory, totalVotes, warnings };
+  return { codesGenerated, codesUsed, votesByCategory, totalVotes, archivedVotes, warnings };
 }
 
 /** Export CSV des résultats agrégés. Point-virgule : Excel en français l'ouvre directement. */

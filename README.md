@@ -3,7 +3,7 @@
 Site de vote anonyme pour les awards de la promotion **CIN 2027** — 5ᵉ année Cybersécurité et
 Investigation Numérique, École Nationale Supérieure Polytechnique de Yaoundé.
 
-63 catégories, 26 nominés, un vote par catégorie et par personne, modifiable jusqu'à la clôture,
+49 catégories, 26 nominés, un vote par catégorie et par personne, modifiable jusqu'à la clôture,
 et des résultats révélés pendant la cérémonie.
 
 ---
@@ -194,16 +194,27 @@ qui sont enregistrés dans les votes.
 }
 ```
 
-- `description` : courte, drôle et bienveillante. **Cinq sont volontairement vides**, en attente de
-  ta définition : `meilleur-sapeur`, `le-creve-de-secours`, `meilleur-mougou-officiel`,
-  `fbi-des-relations`, `meilleur-dossier`. Le site les affiche simplement sans description.
+- `id` : **ne jamais le changer une fois le vote commencé** : c'est lui qui est enregistré dans les
+  votes. Pour renommer une catégorie, modifier seulement `title`.
+- `description` : courte, drôle et bienveillante. Trois catégories proposées au vote n'en ont pas
+  encore : `meilleur-sapeur`, `meilleur-mougou-officiel`, `meilleur-dossier`. Le site les
+  affiche simplement sans description.
 - `type` : `"single"` (une personne) ou `"duo"` (exactement deux personnes différentes, comptées
   par paire, l'ordre de sélection n'ayant pas d'importance).
 - `excludedNominees` : identifiants à retirer de **cette** catégorie, pour un camarade qui ne
   souhaite pas y figurer. Exemple : `"excludedNominees": ["n16"]`.
+- `archived` (facultatif) : `true` masque la catégorie. Elle disparaît de l'affichage, du vote,
+  des résultats et de la cérémonie, mais **ses votes déjà enregistrés sont conservés** : ils restent
+  comptés dans la participation (panneau « Catégories masquées » de l'administration) et ne
+  peuvent plus être modifiés ni retirés. Ne jamais supprimer l'entrée du fichier à la place. Son
+  identifiant reste réservé : une catégorie créée depuis l'administration avec le même titre reçoit
+  un autre identifiant (`le-plus-fou-2`) et repart de zéro.
+- `mergedInto` (facultatif, avec `archived`) : pour une catégorie fusionnée, l'`id` de la
+  catégorie qui la remplace. Les votes ne sont **pas** transférés automatiquement.
 
 `npm run build` vérifie ces fichiers et refuse de construire le site si un identifiant est en
-double, si un type est invalide ou si une exclusion désigne un nominé inexistant.
+double, si un type est invalide, si une exclusion désigne un nominé inexistant ou si une fusion
+pointe vers une catégorie absente ou masquée.
 
 ### Ajouter une catégorie depuis l'espace administrateur
 
@@ -272,7 +283,7 @@ d'adresse, puis connecte le votant.
 **Juste avant la cérémonie**
 
 9. Vérifier que les votes sont **fermés** (ou laisser la clôture automatique faire son travail).
-10. Dans le panneau **Mode cérémonie**, choisir les catégories à révéler et leur ordre — 63 d'un
+10. Dans le panneau **Mode cérémonie**, choisir les catégories à révéler et leur ordre — 49 d'un
     coup, c'est trop long. Enregistrer l'ordre.
 11. Exporter les résultats en CSV et les garder au cas où.
 

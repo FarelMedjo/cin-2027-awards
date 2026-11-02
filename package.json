@@ -10,7 +10,8 @@
     "test": "node --test \"tests/*.test.ts\"",
     "typecheck": "tsc --noEmit",
     "simulate": "node scripts/simulate.js",
-    "code-test": "node scripts/code-test.js"
+    "code-test": "node scripts/code-test.js",
+    "sauvegarde": "node scripts/sauvegarde.js"
   },
   "dependencies": {
     "@netlify/blobs": "^11.1.7"

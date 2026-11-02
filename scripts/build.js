@@ -43,6 +43,19 @@ async function verifierDonnees() {
         problemes.push(`data/categories.json : « ${categorie.id} » exclut « ${exclu} », inconnu dans data/nominees.json`);
       }
     }
+    if (categorie.archived !== undefined && typeof categorie.archived !== 'boolean') {
+      problemes.push(`data/categories.json : « ${categorie.id} » a un champ archived invalide`);
+    }
+  }
+
+  // Une catégorie masquée par fusion doit pointer vers une catégorie encore proposée.
+  const visibles = new Set(categories.filter((c) => !c.archived).map((c) => c.id));
+  for (const categorie of categories) {
+    if (categorie.mergedInto !== undefined && !visibles.has(categorie.mergedInto)) {
+      problemes.push(
+        `data/categories.json : « ${categorie.id} » est fusionnée dans « ${categorie.mergedInto} », absente ou elle-même masquée`,
+      );
+    }
   }
 
   if (problemes.length) {
@@ -50,7 +63,11 @@ async function verifierDonnees() {
     for (const probleme of problemes) console.error(`  - ${probleme}`);
     process.exit(1);
   }
-  return { categories: categories.length, nominees: nominees.length };
+  return {
+    categories: visibles.size,
+    masquees: categories.length - visibles.size,
+    nominees: nominees.length,
+  };
 }
 
 const compte = await verifierDonnees();
@@ -74,5 +91,5 @@ for (const page of pagesErreurs) {
 }
 
 console.log(
-  `dist/ construit : ${compte.categories} catégories, ${compte.nominees} nominés, ${pagesErreurs.length} pages d'erreur.`,
+  `dist/ construit : ${compte.categories} catégories (+ ${compte.masquees} masquées, votes conservés), ${compte.nominees} nominés, ${pagesErreurs.length} pages d'erreur.`,
 );

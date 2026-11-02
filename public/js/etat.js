@@ -13,7 +13,7 @@ export const etat = {
   /** Code en clair, uniquement en mémoire du navigateur. */
   code: null,
   retenir: false,
-  /** { categories, nominees, themes, parId, nominesParId } */
+  /** { categories, archivees, nominees, themes, parId, toutesParId, nominesParId } */
   catalogue: null,
   /** { <categoryId>: { nomineeIds: [...] } } */
   votes: {},
@@ -95,15 +95,23 @@ export async function chargerCatalogue() {
 }
 
 function construireCatalogue(categories, nominesTries) {
+  // Les catégories masquées (« archived ») ne sont ni affichées ni proposées au
+  // vote. Leurs votes déjà enregistrés restent dans le stockage : seule la page
+  // d'administration les liste, pour suivre ces voix conservées.
+  const visibles = categories.filter((c) => !c.archived);
+  const archivees = categories.filter((c) => c.archived);
+
   const themes = [];
-  for (const categorie of categories) {
+  for (const categorie of visibles) {
     if (!themes.includes(categorie.theme)) themes.push(categorie.theme);
   }
   return {
-    categories,
+    categories: visibles,
+    archivees,
     nominees: nominesTries,
     themes,
-    parId: new Map(categories.map((c) => [c.id, c])),
+    parId: new Map(visibles.map((c) => [c.id, c])),
+    toutesParId: new Map(categories.map((c) => [c.id, c])),
     nominesParId: new Map(nominesTries.map((n) => [n.id, n])),
   };
 }
@@ -114,11 +122,13 @@ function construireCatalogue(categories, nominesTries) {
  */
 export function integrerCategories(supplementaires) {
   if (!etat.catalogue || !Array.isArray(supplementaires)) return;
-  const connues = new Set(etat.catalogue.categories.map((c) => c.id));
+  // Un identifiant déjà connu, même celui d'une catégorie masquée, n'est jamais
+  // repris par une catégorie ajoutée.
+  const connues = etat.catalogue.toutesParId;
   const nouvelles = supplementaires.filter((c) => c && !connues.has(c.id));
   if (!nouvelles.length) return;
   etat.catalogue = construireCatalogue(
-    [...etat.catalogue.categories, ...nouvelles],
+    [...etat.catalogue.categories, ...etat.catalogue.archivees, ...nouvelles],
     etat.catalogue.nominees,
   );
 }

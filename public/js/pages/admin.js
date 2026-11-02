@@ -88,6 +88,59 @@ function pageConnexion(recharger) {
 // Panneaux
 // ---------------------------------------------------------------------------
 
+/** Catégories masquées : leurs voix sont conservées, mais n'entrent dans aucun résultat. */
+function detailArchivees(participation) {
+  const archivees = etat.catalogue.archivees ?? [];
+  if (archivees.length === 0) return null;
+  const devenir = (categorie) => {
+    if (!categorie.mergedInto) return 'supprimée';
+    const cible = etat.catalogue.toutesParId.get(categorie.mergedInto);
+    return `fusionnée dans « ${cible?.title ?? categorie.mergedInto} »`;
+  };
+  return el(
+    'details',
+    {},
+    el(
+      'summary',
+      { style: 'cursor:pointer;min-height:44px;padding:.6rem 0' },
+      `Catégories masquées : ${participation.archivedVotes ?? 0} voix conservées`,
+    ),
+    el(
+      'p',
+      { class: 'champ-aide' },
+      'Retirées de l’affichage et du vote. Leurs voix restent enregistrées et comptées dans le total ci-dessus, mais n’entrent dans aucun résultat.',
+    ),
+    el(
+      'table',
+      { class: 'tableau' },
+      el(
+        'thead',
+        {},
+        el(
+          'tr',
+          {},
+          el('th', {}, 'Catégorie masquée'),
+          el('th', {}, 'Devenue'),
+          el('th', { class: 'nombre' }, 'Voix'),
+        ),
+      ),
+      el(
+        'tbody',
+        {},
+        archivees.map((categorie) =>
+          el(
+            'tr',
+            {},
+            el('td', {}, categorie.title),
+            el('td', {}, devenir(categorie)),
+            el('td', { class: 'nombre' }, String(participation.votesByCategory[categorie.id] ?? 0)),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
 function panneauParticipation(donnees, surRafraichir) {
   const { participation, state } = donnees;
   const parCategorie = etat.catalogue.categories
@@ -153,6 +206,7 @@ function panneauParticipation(donnees, surRafraichir) {
         ),
       ),
     ),
+    detailArchivees(participation),
     el(
       'p',
       { class: 'champ-aide' },

@@ -11,6 +11,14 @@ export interface Category {
   description: string;
   type: CategoryType;
   excludedNominees?: string[];
+  /**
+   * Categorie masquee : retiree de l'affichage, du vote et des resultats. Ses
+   * votes deja enregistres restent dans le stockage et dans la participation.
+   * Ne jamais supprimer l'entree ni changer son id : les votes y sont rattaches.
+   */
+  archived?: boolean;
+  /** Categorie masquee par fusion : id de la categorie qui la remplace. */
+  mergedInto?: string;
 }
 
 export interface Nominee {
@@ -74,9 +82,15 @@ export interface ResultRow {
 export interface Participation {
   codesGenerated: number;
   codesUsed: number;
-  /** Nombre de lignes de vote par categorie (participation, jamais les resultats). */
+  /**
+   * Nombre de lignes de vote par categorie (participation, jamais les resultats),
+   * categories masquees comprises.
+   */
   votesByCategory: Record<string, number>;
+  /** Toutes les lignes de vote, categories masquees comprises. */
   totalVotes: number;
+  /** Dont lignes de vote conservees dans des categories masquees. */
+  archivedVotes: number;
   /** Incoherences detectees : lignes de vote > codes ayant vote. */
   warnings: string[];
 }

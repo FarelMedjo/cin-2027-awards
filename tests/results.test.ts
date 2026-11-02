@@ -72,7 +72,7 @@ describe('comptage des voix', () => {
     await voter(store, CATEGORIE, ['n03'], 1);
 
     const resultats = await computeResults(store);
-    assert.equal(resultats.length, 63);
+    assert.equal(resultats.length, 49);
     const vide = resultats.find((r) => r.categoryId === 'le-plus-timide')!;
     assert.equal(vide.totalVotes, 0);
     assert.deepEqual(vide.rows, []);
@@ -146,7 +146,27 @@ describe('participation', () => {
     const participation = await computeParticipation(store);
     assert.equal(participation.codesUsed, 0);
     assert.equal(participation.warnings.length, 1);
-    assert.match(participation.warnings[0]!, /Major de la classe/);
+    assert.match(participation.warnings[0]!, /Major de la promo/);
+  });
+
+  it('conserve les voix des catégories masquées : comptées dans la participation, absentes des résultats', async () => {
+    const store = new FakeStore();
+    await voter(store, CATEGORIE, ['n03'], 3);
+    // Voix enregistrées avant que ces catégories soient masquées.
+    await voter(store, 'le-plus-fou', ['n04'], 2);
+    await voter(store, 'champion-des-exposes-improvises', ['n05'], 1);
+
+    const participation = await computeParticipation(store);
+    assert.equal(participation.votesByCategory['le-plus-fou'], 2);
+    assert.equal(participation.votesByCategory['champion-des-exposes-improvises'], 1);
+    assert.equal(participation.archivedVotes, 3);
+    assert.equal(participation.totalVotes, 6);
+
+    const resultats = await computeResults(store);
+    assert.ok(!resultats.some((r) => r.categoryId === 'le-plus-fou'));
+    assert.ok(!resultats.some((r) => r.categoryId === 'champion-des-exposes-improvises'));
+    // Les lignes de vote elles-mêmes sont intactes.
+    assert.equal(store.keysWithPrefix(keys.votesPrefix('le-plus-fou')).length, 2);
   });
 });
 

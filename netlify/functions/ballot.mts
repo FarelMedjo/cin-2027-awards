@@ -13,7 +13,11 @@
  */
 
 import type { Config } from '@netlify/functions';
-import { validateSelectionFor } from '../../shared/catalog.ts';
+import {
+  ALL_CATEGORY_BY_ID,
+  ARCHIVED_CATEGORY_MESSAGE,
+  validateSelectionFor,
+} from '../../shared/catalog.ts';
 import {
   castVote,
   DossierUnreadableError,
@@ -70,6 +74,11 @@ export default async (req: Request): Promise<Response> => {
     const categoryId = typeof body.categoryId === 'string' ? body.categoryId : '';
     const category = await findCategory(store, categoryId);
     if (!category) {
+      // Catégorie masquée : ses votes sont conservés tels quels, ni modifiables
+      // ni retirables, pour que son décompte ne bouge plus.
+      if (ALL_CATEGORY_BY_ID.has(categoryId)) {
+        return errorResponse(ARCHIVED_CATEGORY_MESSAGE, 409, 'category_archived');
+      }
       return errorResponse('Cette catégorie n’existe pas.', 400, 'unknown_category');
     }
 
