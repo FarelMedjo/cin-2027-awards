@@ -13,7 +13,7 @@
  */
 
 import type { Config } from '@netlify/functions';
-import { CATEGORY_BY_ID, validateSelection } from '../../shared/catalog.ts';
+import { validateSelectionFor } from '../../shared/catalog.ts';
 import {
   castVote,
   DossierUnreadableError,
@@ -21,6 +21,7 @@ import {
   removeVote,
   WriteConflictError,
 } from './lib/ballot.ts';
+import { findCategory } from './lib/categories.ts';
 import { isVotingOpen, readState, toPublicState } from './lib/election.ts';
 import { errorResponse, jsonResponse, readJson, requireEnv } from './lib/http.ts';
 import { openStore } from './lib/blobs.ts';
@@ -67,12 +68,13 @@ export default async (req: Request): Promise<Response> => {
     }
 
     const categoryId = typeof body.categoryId === 'string' ? body.categoryId : '';
-    if (!CATEGORY_BY_ID.has(categoryId)) {
+    const category = await findCategory(store, categoryId);
+    if (!category) {
       return errorResponse('Cette catégorie n’existe pas.', 400, 'unknown_category');
     }
 
     if (action === 'cast') {
-      const validation = validateSelection(categoryId, body.nomineeIds);
+      const validation = validateSelectionFor(category, body.nomineeIds);
       if (!validation.ok) return errorResponse(validation.error, 400, validation.code);
       const ballot = await castVote(store, auth.ctx, categoryId, validation.value);
       return jsonResponse({ ballot, state: publicState });

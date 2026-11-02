@@ -6,22 +6,27 @@
  * est toujours exactement le nombre de lignes présentes.
  */
 
-import { CATEGORIES, CATEGORY_BY_ID, displayName } from '../../../shared/catalog.ts';
+import { displayName } from '../../../shared/catalog.ts';
 import type { CategoryResult, Participation, ResultRow } from '../../../shared/types.ts';
+import { listCategories } from './categories.ts';
 import { countByPrefix, keys, parseVoteKey, type StoreLike } from './store.ts';
 
 /** categorie -> (choix trié « n03 » ou « n03+n11 ») -> nombre de voix. */
 export type Tally = Map<string, Map<string, number>>;
 
 export async function tallyVotes(store: StoreLike): Promise<Tally> {
-  const { blobs } = await store.list({ prefix: keys.votesPrefix() });
+  const [{ blobs }, categories] = await Promise.all([
+    store.list({ prefix: keys.votesPrefix() }),
+    listCategories(store),
+  ]);
+  const knownIds = new Set(categories.map((c) => c.id));
   const tally: Tally = new Map();
   for (const blob of blobs) {
     const parsed = parseVoteKey(blob.key);
     if (!parsed) continue;
     // Une catégorie retirée de data/categories.json après un vote ne doit pas
     // faire échouer le dépouillement : ses lignes sont simplement ignorées.
-    if (!CATEGORY_BY_ID.has(parsed.categoryId)) continue;
+    if (!knownIds.has(parsed.categoryId)) continue;
     const selection = [...parsed.nomineeIds].sort().join('+');
     const perCategory = tally.get(parsed.categoryId) ?? new Map<string, number>();
     perCategory.set(selection, (perCategory.get(selection) ?? 0) + 1);
@@ -69,10 +74,10 @@ export function rankSelections(selections: Map<string, number>): ResultRow[] {
   return rows;
 }
 
-/** Résultats complets, dans l'ordre de data/categories.json. */
+/** Résultats complets, dans l'ordre de data/categories.json puis des catégories ajoutées. */
 export async function computeResults(store: StoreLike): Promise<CategoryResult[]> {
-  const tally = await tallyVotes(store);
-  return CATEGORIES.map((category) => {
+  const [tally, categories] = await Promise.all([tallyVotes(store), listCategories(store)]);
+  return categories.map((category) => {
     const rows = rankSelections(tally.get(category.id) ?? new Map());
     return {
       categoryId: category.id,
@@ -87,17 +92,18 @@ export async function computeResults(store: StoreLike): Promise<CategoryResult[]
 
 /** Participation : combien de codes, combien ont voté, combien de voix par catégorie. */
 export async function computeParticipation(store: StoreLike): Promise<Participation> {
-  const [codesGenerated, codesUsed, tally] = await Promise.all([
+  const [codesGenerated, codesUsed, tally, categories] = await Promise.all([
     countByPrefix(store, keys.codesPrefix),
     countByPrefix(store, keys.votersPrefix),
     tallyVotes(store),
+    listCategories(store),
   ]);
 
   const votesByCategory: Record<string, number> = {};
   let totalVotes = 0;
   const warnings: string[] = [];
 
-  for (const category of CATEGORIES) {
+  for (const category of categories) {
     const perCategory = tally.get(category.id);
     const count = perCategory ? [...perCategory.values()].reduce((a, b) => a + b, 0) : 0;
     votesByCategory[category.id] = count;

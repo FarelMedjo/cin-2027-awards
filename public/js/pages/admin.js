@@ -8,7 +8,7 @@
 
 import { api } from '../api.js';
 import { bandeau, el, messageErreur, sansAccent, vider } from '../dom.js';
-import { etat } from '../etat.js';
+import { etat, integrerCategories } from '../etat.js';
 import { enregistrerLot } from './lot.js';
 
 /** Propose un fichier au téléchargement, sans quitter la page. */
@@ -329,6 +329,115 @@ function panneauCodes(naviguer, recharger) {
       ),
     ),
     zoneResultat,
+  );
+}
+
+const NOUVEAU_THEME = '__nouveau__';
+
+function panneauCategories(personnalisees, recharger) {
+  const champTitre = el('input', {
+    type: 'text',
+    id: 'categorie-titre',
+    maxlength: '80',
+    autocomplete: 'off',
+    placeholder: 'Ex. : Le plus ponctuel',
+  });
+  const choixTheme = el(
+    'select',
+    {
+      id: 'categorie-theme',
+      onchange: () => {
+        champNouveauTheme.hidden = choixTheme.value !== NOUVEAU_THEME;
+        if (!champNouveauTheme.hidden) champNouveauTheme.focus();
+      },
+    },
+    etat.catalogue.themes.map((theme) => el('option', { value: theme }, theme)),
+    el('option', { value: NOUVEAU_THEME }, 'Nouveau thème…'),
+  );
+  const champNouveauTheme = el('input', {
+    type: 'text',
+    id: 'categorie-nouveau-theme',
+    maxlength: '60',
+    autocomplete: 'off',
+    placeholder: 'Nom du nouveau thème',
+    'aria-label': 'Nom du nouveau thème',
+    hidden: true,
+  });
+  const champDescription = el('input', {
+    type: 'text',
+    id: 'categorie-description',
+    maxlength: '200',
+    autocomplete: 'off',
+    placeholder: 'Une phrase pour présenter la catégorie (facultatif)',
+  });
+  const choixType = el(
+    'select',
+    { id: 'categorie-type' },
+    el('option', { value: 'single' }, 'Une personne'),
+    el('option', { value: 'duo' }, 'Deux personnes (binôme)'),
+  );
+  const bouton = el('button', { class: 'bouton', type: 'submit' }, 'Créer la catégorie');
+
+  return el(
+    'section',
+    { class: 'panneau' },
+    el('h2', {}, 'Créer une catégorie'),
+    el(
+      'p',
+      { class: 'champ-aide' },
+      'La catégorie apparaît tout de suite pour les votants, qui la verront à leur prochain chargement du site. Elle est ajoutée à la fin de la liste et reste en place après une réinitialisation de l’élection.',
+    ),
+    el(
+      'form',
+      {
+        onsubmit: async (evenement) => {
+          evenement.preventDefault();
+          const theme =
+            choixTheme.value === NOUVEAU_THEME ? champNouveauTheme.value : choixTheme.value;
+          bouton.disabled = true;
+          const reponse = await api.admin('category-add', {
+            category: {
+              title: champTitre.value,
+              theme,
+              description: champDescription.value,
+              type: choixType.value,
+            },
+          });
+          bouton.disabled = false;
+          if (!reponse.ok) return bandeau(reponse.erreur, 'erreur');
+          bandeau(`Catégorie « ${reponse.donnees.category.title} » créée.`);
+          recharger();
+        },
+      },
+      el('label', { for: 'categorie-titre' }, 'Titre'),
+      champTitre,
+      el('label', { for: 'categorie-theme' }, 'Thème'),
+      choixTheme,
+      champNouveauTheme,
+      el('label', { for: 'categorie-description' }, 'Description'),
+      champDescription,
+      el('label', { for: 'categorie-type' }, 'Nombre de personnes à choisir'),
+      choixType,
+      el('div', { class: 'barre-actions', style: 'margin-top:1rem' }, bouton),
+    ),
+    personnalisees.length
+      ? el(
+          'div',
+          { style: 'margin-top:1.2rem' },
+          el('h3', {}, `Catégories ajoutées (${personnalisees.length})`),
+          el(
+            'ul',
+            {},
+            personnalisees.map((categorie) =>
+              el(
+                'li',
+                {},
+                `${categorie.title} — ${categorie.theme}${categorie.type === 'duo' ? ' (binôme)' : ''}`,
+              ),
+            ),
+          ),
+        )
+      : null,
   );
 }
 
@@ -667,6 +776,8 @@ export async function rendre(contexte) {
   }
 
   const donnees = statut.donnees;
+  // Le catalogue du navigateur doit contenir les catégories ajoutées depuis le dernier chargement.
+  integrerCategories(donnees.customCategories);
 
   return el(
     'div',
@@ -694,6 +805,7 @@ export async function rendre(contexte) {
       panneauParticipation(donnees, recharger),
       panneauOuverture(donnees, recharger),
       panneauCodes(naviguer, recharger),
+      panneauCategories(donnees.customCategories ?? [], recharger),
       panneauCeremonie(donnees.ceremonyOrder ?? [], naviguer),
       panneauResultats(donnees.state),
       panneauReinitialisation(recharger),

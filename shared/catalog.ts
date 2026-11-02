@@ -88,6 +88,100 @@ export function displayName(nomineeId: string): string {
 
 export type Validation<T> = { ok: true; value: T } | { ok: false; error: string; code: string };
 
+/** Garde-fou : nombre maximal de catégories ajoutées par l'administrateur. */
+export const MAX_CUSTOM_CATEGORIES = 40;
+
+/** Identifiant sûr (a-z, 0-9, tirets) tiré d'un titre : il entre dans les clés de vote et dans l'URL. */
+function slugify(text: string): string {
+  return text
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/œ/g, 'oe')
+    .replace(/æ/g, 'ae')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60)
+    .replace(/-+$/, '');
+}
+
+function normalizeTitle(title: string): string {
+  return slugify(title);
+}
+
+function cleanText(value: unknown, max: number): string | null {
+  if (typeof value !== 'string') return null;
+  const text = value.trim().replace(/\s+/g, ' ');
+  if (text.length > max || /[\u0000-\u001f\u007f]/.test(text)) return null;
+  return text;
+}
+
+/**
+ * Valide une catégorie saisie par l'administrateur et lui attribue un identifiant
+ * unique. `existing` est l'ensemble des catégories déjà connues (fichier + ajoutées).
+ */
+export function buildCustomCategory(
+  input: unknown,
+  existing: readonly Category[],
+): Validation<Category> {
+  if (typeof input !== 'object' || input === null) {
+    return { ok: false, error: 'Catégorie invalide.', code: 'invalid_category' };
+  }
+  const raw = input as Record<string, unknown>;
+
+  const title = cleanText(raw.title, 80);
+  if (!title || title.length < 3) {
+    return {
+      ok: false,
+      error: 'Le titre doit faire entre 3 et 80 caractères.',
+      code: 'invalid_title',
+    };
+  }
+  const theme = cleanText(raw.theme, 60);
+  if (!theme || theme.length < 2) {
+    return {
+      ok: false,
+      error: 'Le thème doit faire entre 2 et 60 caractères.',
+      code: 'invalid_theme',
+    };
+  }
+  const description = raw.description === undefined ? '' : cleanText(raw.description, 200);
+  if (description === null) {
+    return {
+      ok: false,
+      error: 'La description ne peut pas dépasser 200 caractères.',
+      code: 'invalid_description',
+    };
+  }
+  if (raw.type !== 'single' && raw.type !== 'duo') {
+    return { ok: false, error: 'Le type de catégorie est invalide.', code: 'invalid_type' };
+  }
+
+  const wanted = normalizeTitle(title);
+  if (!wanted) {
+    return {
+      ok: false,
+      error: 'Le titre doit contenir des lettres ou des chiffres.',
+      code: 'invalid_title',
+    };
+  }
+  if (existing.some((c) => normalizeTitle(c.title) === wanted)) {
+    return { ok: false, error: 'Une catégorie porte déjà ce titre.', code: 'duplicate_title' };
+  }
+
+  const taken = new Set(existing.map((c) => c.id));
+  let id = wanted;
+  for (let suffix = 2; taken.has(id); suffix += 1) id = `${wanted}-${suffix}`;
+
+  // Un thème déjà présent garde son orthographe exacte, pour ne pas en créer un double.
+  const knownTheme = existing.find((c) => c.theme.toLowerCase() === theme.toLowerCase())?.theme;
+
+  return {
+    ok: true,
+    value: { id, title, theme: knownTheme ?? theme, description, type: raw.type, excludedNominees: [] },
+  };
+}
+
 /**
  * Valide une selection contre les fichiers de donnees.
  *

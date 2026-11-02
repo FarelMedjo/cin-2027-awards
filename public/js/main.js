@@ -16,6 +16,7 @@ import {
   enregistrerCode,
   etat,
   oublierCode,
+  integrerCategories,
   retenirMemorise,
 } from './etat.js';
 
@@ -160,7 +161,10 @@ async function demarrer() {
   }
 
   const reponseEtat = await api.etat();
-  if (reponseEtat.ok) appliquerEtatElection(reponseEtat.donnees);
+  if (reponseEtat.ok) {
+    appliquerEtatElection(reponseEtat.donnees);
+    integrerCategories(reponseEtat.donnees.customCategories);
+  }
 
   etat.retenir = retenirMemorise();
   const codeConnu = codeQr ?? codeMemorise();

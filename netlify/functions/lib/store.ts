@@ -10,6 +10,8 @@
  *                                nominés choisis (« n03 », ou « n03+n11 » pour un duo).
  *   election/state               ouvert/fermé + date de clôture automatique.
  *   election/ceremony            ordre de révélation choisi pour la cérémonie.
+ *   election/categories          catégories ajoutées par l'administrateur, en plus de
+ *                                celles de data/categories.json.
  *   rl/<empreinte>               limitation de débit, durée de vie courte.
  *   admin/sessions/<empreinte>   sessions administrateur.
  *
@@ -82,6 +84,7 @@ export const keys = {
   votesPrefix: (categoryId?: string) => (categoryId ? `votes/${categoryId}/` : 'votes/'),
   state: 'election/state',
   ceremony: 'election/ceremony',
+  customCategories: 'election/categories',
   rateLimit: (fingerprint: string) => `rl/${fingerprint}`,
   adminSession: (fingerprint: string) => `admin/sessions/${fingerprint}`,
   adminSessionsPrefix: 'admin/sessions/',

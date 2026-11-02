@@ -90,19 +90,37 @@ export async function chargerCatalogue() {
     .map((n) => ({ ...n, displayName: n.displayName || n.fullName }))
     .sort((a, b) => a.displayName.localeCompare(b.displayName, 'fr'));
 
+  etat.catalogue = construireCatalogue(categories, nominesTries);
+  return etat.catalogue;
+}
+
+function construireCatalogue(categories, nominesTries) {
   const themes = [];
   for (const categorie of categories) {
     if (!themes.includes(categorie.theme)) themes.push(categorie.theme);
   }
-
-  etat.catalogue = {
+  return {
     categories,
     nominees: nominesTries,
     themes,
     parId: new Map(categories.map((c) => [c.id, c])),
     nominesParId: new Map(nominesTries.map((n) => [n.id, n])),
   };
-  return etat.catalogue;
+}
+
+/**
+ * Ajoute au catalogue les catégories créées par l'administrateur, que le serveur
+ * renvoie avec l'état public. Sans effet pour celles déjà connues.
+ */
+export function integrerCategories(supplementaires) {
+  if (!etat.catalogue || !Array.isArray(supplementaires)) return;
+  const connues = new Set(etat.catalogue.categories.map((c) => c.id));
+  const nouvelles = supplementaires.filter((c) => c && !connues.has(c.id));
+  if (!nouvelles.length) return;
+  etat.catalogue = construireCatalogue(
+    [...etat.catalogue.categories, ...nouvelles],
+    etat.catalogue.nominees,
+  );
 }
 
 /** Nom affiché d'un nominé. */

@@ -202,6 +202,24 @@ qui sont enregistrés dans les votes.
 `npm run build` vérifie ces fichiers et refuse de construire le site si un identifiant est en
 double, si un type est invalide ou si une exclusion désigne un nominé inexistant.
 
+### Ajouter une catégorie depuis l'espace administrateur
+
+Sans toucher aux fichiers ni redéployer : dans `/admin`, le panneau **Créer une catégorie** demande
+un titre, un thème (existant ou nouveau), une description facultative et le nombre de personnes à
+choisir (une, ou deux pour un binôme).
+
+- Les catégories créées ainsi sont stockées sur le site (clé `election/categories`) et **s'ajoutent**
+  à celles de `data/categories.json`, à la fin de la liste. Les votants les voient au prochain
+  chargement du site ; les résultats, la participation, l'export CSV et le mode cérémonie les
+  prennent en compte comme les autres.
+- Elles survivent à la réinitialisation de l'élection, qui n'efface que les votes, les dossiers et
+  les codes.
+- L'identifiant est tiré du titre (`Le plus ponctuel` → `le-plus-ponctuel`). Deux catégories ne
+  peuvent pas porter le même titre, et 40 catégories ajoutées au maximum.
+- Il n'y a pas de bouton pour en supprimer une : pour une erreur de saisie, le plus simple est de
+  garder la catégorie sans la révéler à la cérémonie.
+- Les exclusions de nominés ne se règlent que dans `data/categories.json`.
+
 ---
 
 ## Générer et imprimer les tickets

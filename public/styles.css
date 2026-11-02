@@ -303,7 +303,8 @@ input[type='text'],
 input[type='password'],
 input[type='search'],
 input[type='number'],
-input[type='datetime-local'] {
+input[type='datetime-local'],
+select {
   width: 100%;
   min-height: var(--tactile);
   padding: 0.7rem 0.9rem;

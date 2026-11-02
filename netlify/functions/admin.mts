@@ -8,7 +8,8 @@
  *   open / close / schedule
  *   results          refusé tant que les votes ne sont pas fermés
  *   ceremony-get / ceremony-set
- *   reset            remet l'élection à zéro (double confirmation côté serveur)
+ *   category-add     ajoute une catégorie à celles de data/categories.json
+ *   reset           remet l'élection à zéro (double confirmation côté serveur)
  *
  * Les codes en clair ne sont jamais stockés : le serveur n'en garde que le HMAC.
  * C'est donc la page d'administration qui construit le CSV, les tickets et les
@@ -16,8 +17,8 @@
  */
 
 import type { Config } from '@netlify/functions';
-import { CATEGORIES, CATEGORY_BY_ID } from '../../shared/catalog.ts';
 import type { ElectionState } from '../../shared/types.ts';
+import { addCustomCategory, listCategories, readCustomCategories } from './lib/categories.ts';
 import { codeId, formatCode, generateCodeBody } from './lib/crypto.ts';
 import { isVotingOpen, readState, toPublicState, writeState } from './lib/election.ts';
 import { errorResponse, jsonResponse, readJson, requireEnv } from './lib/http.ts';
@@ -64,12 +65,16 @@ function parseClosesAt(raw: unknown): { ok: true; value: string | null } | { ok:
 }
 
 async function readCeremonyOrder(store: StoreLike): Promise<string[]> {
-  const raw = (await store.get(keys.ceremony, { type: 'json' })) as { order?: unknown } | null;
+  const [raw, categories] = await Promise.all([
+    store.get(keys.ceremony, { type: 'json' }) as Promise<{ order?: unknown } | null>,
+    listCategories(store),
+  ]);
+  const knownIds = new Set(categories.map((c) => c.id));
   const order = Array.isArray(raw?.order) ? (raw?.order as unknown[]) : [];
   const seen = new Set<string>();
   const result: string[] = [];
   for (const id of order) {
-    if (typeof id !== 'string' || seen.has(id) || !CATEGORY_BY_ID.has(id)) continue;
+    if (typeof id !== 'string' || seen.has(id) || !knownIds.has(id)) continue;
     seen.add(id);
     result.push(id);
   }
@@ -134,16 +139,18 @@ export default async (req: Request): Promise<Response> => {
     }
 
     if (action === 'status') {
-      const [state, participation, ceremonyOrder] = await Promise.all([
+      const [state, participation, ceremonyOrder, customCategories] = await Promise.all([
         readState(store),
         computeParticipation(store),
         readCeremonyOrder(store),
+        readCustomCategories(store),
       ]);
       return jsonResponse({
         authenticated: true,
         state: toPublicState(state),
         participation,
         ceremonyOrder,
+        customCategories,
       });
     }
 
@@ -190,19 +197,29 @@ export default async (req: Request): Promise<Response> => {
     }
 
     if (action === 'ceremony-get') {
+      const [order, categories] = await Promise.all([readCeremonyOrder(store), listCategories(store)]);
       return jsonResponse({
-        order: await readCeremonyOrder(store),
-        categories: CATEGORIES.map((c) => ({ id: c.id, title: c.title, theme: c.theme })),
+        order,
+        categories: categories.map((c) => ({ id: c.id, title: c.title, theme: c.theme })),
       });
+    }
+
+    if (action === 'category-add') {
+      const added = await addCustomCategory(store, body.category);
+      if (!added.ok) {
+        return errorResponse(added.error, added.code === 'write_conflict' ? 409 : 400, added.code);
+      }
+      return jsonResponse({ category: added.value });
     }
 
     if (action === 'ceremony-set') {
       const submitted = Array.isArray(body.order) ? body.order : null;
       if (!submitted) return errorResponse('Ordre de révélation invalide.', 400, 'bad_order');
+      const knownIds = new Set((await listCategories(store)).map((c) => c.id));
       const seen = new Set<string>();
       const order: string[] = [];
       for (const id of submitted) {
-        if (typeof id !== 'string' || seen.has(id) || !CATEGORY_BY_ID.has(id)) continue;
+        if (typeof id !== 'string' || seen.has(id) || !knownIds.has(id)) continue;
         seen.add(id);
         order.push(id);
       }
