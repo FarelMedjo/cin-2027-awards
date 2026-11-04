@@ -339,6 +339,62 @@
     "excludedNominees": []
   },
   {
+    "id": "glow-up",
+    "title": "Glow-up",
+    "theme": "Style et personnalité",
+    "description": "Méconnaissable depuis la première année, et dans le bon sens.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "glow-down",
+    "title": "Glow-down",
+    "theme": "Style et personnalité",
+    "description": "Au sommet en première année ; depuis, la pente est douce. On l'aime quand même.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "pire-style-vestimentaire",
+    "title": "Personne avec le pire style vestimentaire",
+    "theme": "Style et personnalité",
+    "description": "Ose des associations de couleurs que la mode n'a pas encore comprises.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-naif",
+    "title": "Plus naïve / Plus naïf",
+    "theme": "Style et personnalité",
+    "description": "Croit tout ce qu'on lui raconte, surtout les blagues les plus grosses.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-mesquin",
+    "title": "Le/la plus mesquin(e)",
+    "theme": "Style et personnalité",
+    "description": "Ne laisse jamais passer l'occasion d'une petite pique bien placée.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-laid",
+    "title": "Le plus/la plus laid(e)",
+    "theme": "Style et personnalité",
+    "description": "Award remis avec autodérision et beaucoup d'affection : le charme est ailleurs.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
+    "id": "le-plus-arrogant",
+    "title": "Le plus arrogant",
+    "theme": "Style et personnalité",
+    "description": "Sait qu'il a raison avant même d'avoir entendu la question.",
+    "type": "single",
+    "excludedNominees": []
+  },
+  {
     "id": "meilleur-dragueur",
     "title": "Meilleur dragueur",
     "theme": "Cœur et relations",

@@ -71,7 +71,7 @@ async function readCounter(
  * Consulte la limite sans la consommer.
  *
  * Seules les tentatives *ratées* sont comptées (voir recordFailure) : un votant
- * qui enchaîne ses 49 catégories avec un code valide n'est donc jamais ralenti.
+ * qui enchaîne ses 56 catégories avec un code valide n'est donc jamais ralenti.
  */
 export async function peekRateLimit(
   store: StoreLike,

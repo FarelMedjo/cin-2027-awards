@@ -35,7 +35,7 @@ const IDS_D_ORIGINE = [
   'le-plus-endette', 'le-plus-gros-foire', 'le-mythomane',
 ];
 
-/** Ordre d'affichage final demandé (49 catégories). */
+/** Ordre d'affichage final demandé (56 catégories). */
 const ORDRE_ATTENDU = [
   'Major de la promo',
   "Prix de l'excellence en travaux pratiques",
@@ -71,6 +71,13 @@ const ORDRE_ATTENDU = [
   'Le plus sauvage',
   "L'imprévisible",
   'Le plus beau',
+  'Glow-up',
+  'Glow-down',
+  'Personne avec le pire style vestimentaire',
+  'Plus naïve / Plus naïf',
+  'Le/la plus mesquin(e)',
+  'Le plus/la plus laid(e)',
+  'Le plus arrogant',
   'Meilleur dragueur',
   'La crush de la promo',
   'Le couple que la promo attend',
@@ -89,14 +96,14 @@ const ORDRE_ATTENDU = [
 ];
 
 describe('fichiers de données', () => {
-  it('propose 49 catégories au vote, aux identifiants uniques', () => {
-    assert.equal(CATEGORIES.length, 49);
+  it('propose 56 catégories au vote, aux identifiants uniques', () => {
+    assert.equal(CATEGORIES.length, 56);
     assert.equal(new Set(ALL_CATEGORIES.map((c) => c.id)).size, ALL_CATEGORIES.length);
   });
 
   it('garde les 63 identifiants d’origine, auxquels les votes enregistrés sont rattachés', () => {
     for (const id of IDS_D_ORIGINE) assert.ok(ALL_CATEGORY_BY_ID.has(id), id);
-    assert.equal(ALL_CATEGORIES.length, 66);
+    assert.equal(ALL_CATEGORIES.length, 73);
     assert.equal(ARCHIVED_CATEGORIES.length, 17);
   });
 
@@ -136,7 +143,7 @@ describe('fichiers de données', () => {
     assert.deepEqual(Object.fromEntries(compte), {
       'Excellence académique': 16,
       'Vie de promo': 13,
-      'Style et personnalité': 5,
+      'Style et personnalité': 12,
       'Cœur et relations': 10,
       'Retards, absences et excuses': 5,
     });
